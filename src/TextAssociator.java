@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-//smile sea the very thing is fun and games as far as jot down behavioral norm and comprehend dirty joke for signals structures
-
 /* CSE 373 Starter Code
  * @Author Yiran Juan
  * 
@@ -72,7 +70,7 @@ public class TextAssociator {
 	/* Creates a new TextAssociator without any associations 
 	 */
 	public TextAssociator() {
-		this.table = new WordInfoSeparateChain[3405];
+		this.table = new WordInfoSeparateChain[17];
 		this.size = 0;
 	}
 	
@@ -85,22 +83,30 @@ public class TextAssociator {
 		int hashIndex = getHashCode(word);
 		WordInfo newWord = new WordInfo(word);
 		double loadFactor = (double)size / (double)table.length;
-//		System.out.println(this.size);
 		
 		//if certain index contains no element, create a new WordInfoSeparateChain
 		if(table[hashIndex] == null){
 			table[hashIndex] = new WordInfoSeparateChain();
-			//resize the table depending on the load factor
-			if(loadFactor <= 0.75){
-				table[hashIndex].add(newWord);
-				size ++;
-				return true;
-			}else{
-				resize();
-				addNewWord(word); 
+		}
+		
+		//if the word already existed, return false
+		for (WordInfo chainItem: table[hashIndex].getElements()) {
+			if (chainItem.getWord().equalsIgnoreCase(word)) {
+				return false;
 			}
 		}
+		
+		//resize the table depending on the load factor
+		if(loadFactor <= 0.75){
+			table[hashIndex].add(newWord);
+			size ++;
+			return true;
+		}else{
+			resize();
+			addNewWord(word); 
+		}
 		return false;
+		
 	}
 	
 	
@@ -209,7 +215,7 @@ public class TextAssociator {
 	 */
 	private void resize(){
 		//new table with double size of the original table
-		WordInfoSeparateChain[] tempTable = new WordInfoSeparateChain[table.length * 2];
+		WordInfoSeparateChain[] tempTable = new WordInfoSeparateChain[(table.length * 2) + 1];
 		WordInfoSeparateChain[] oldTable = table;
 		table = tempTable;
 		
@@ -229,7 +235,5 @@ public class TextAssociator {
 				}
 			}
 		}
-		//update the table
-		//table = tempTable;
 	}
 }

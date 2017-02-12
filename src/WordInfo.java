@@ -71,4 +71,11 @@ public class WordInfo {
 		WordInfo other = (WordInfo) o;
 		return this.getWord().equals(other.getWord());
 	}
+
+	// Returns an int representing the hashCode of this WordInfo object.
+	// Given two WordInfo objects with the same data, each object will
+        // return the same hashCode.
+	public int hashCode() {
+	        return Math.abs(this.word.hashCode() * 31);
+	}
 }
